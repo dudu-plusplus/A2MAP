@@ -13,16 +13,16 @@ public class MyList<T> implements IList<T> {
     }
 
     @Override
-    public T pop() throws ADTException {
-        if (list.isEmpty()) {
-            throw new ADTException("pop from an empty list");
+    public T get(int index) throws ADTException {
+        if (index < 0 || index >= list.size()) {
+            throw new ADTException("index out of bounds");
         }
-        return list.remove(0);
+        return list.get(index);
     }
 
     @Override
-    public boolean isEmpty() {
-        return list.isEmpty();
+    public int size() {
+        return list.size();
     }
 
     @Override

@@ -4,7 +4,7 @@ import interpreter.exceptions.ADTException;
 import interpreter.exceptions.ExpressionException;
 import interpreter.exceptions.StatementException;
 import interpreter.model.exp.IExp;
-import interpreter.model.state.PrgState;
+import interpreter.model.PrgState;
 import interpreter.model.type.IType;
 import interpreter.model.value.IValue;
 

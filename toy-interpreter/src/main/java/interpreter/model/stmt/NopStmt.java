@@ -1,6 +1,6 @@
 package interpreter.model.stmt;
 
-import interpreter.model.state.PrgState;
+import interpreter.model.PrgState;
 
 public class NopStmt implements IStmt {
     @Override

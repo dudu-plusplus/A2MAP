@@ -1,7 +1,7 @@
 package interpreter.model.stmt;
 
 import interpreter.model.adt.IStack;
-import interpreter.model.state.PrgState;
+import interpreter.model.PrgState;
 
 public class CompStmt implements IStmt {
     private final IStmt first;

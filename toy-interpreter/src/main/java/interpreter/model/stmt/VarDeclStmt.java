@@ -1,9 +1,8 @@
 package interpreter.model.stmt;
 
 import interpreter.exceptions.StatementException;
-import interpreter.model.state.PrgState;
+import interpreter.model.PrgState;
 import interpreter.model.type.IType;
-import interpreter.model.value.IValue;
 
 public class VarDeclStmt implements IStmt {
     private final String name;

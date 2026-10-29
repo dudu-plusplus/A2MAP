@@ -5,7 +5,7 @@ import interpreter.exceptions.MyException;
 import interpreter.model.adt.MyDictionary;
 import interpreter.model.adt.MyList;
 import interpreter.model.adt.MyStack;
-import interpreter.model.state.PrgState;
+import interpreter.model.PrgState;
 import interpreter.model.stmt.IStmt;
 import interpreter.repository.IRepository;
 import interpreter.repository.Repository;
@@ -18,7 +18,7 @@ public class TextMenu {
     public void show() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\n--- Toy Language Interpreter ---");
+            System.out.println("\n Toy Language Interpreter :>");
             System.out.println("1. Select a program");
             System.out.println("2. Run selected program");
             System.out.println("0. Exit");

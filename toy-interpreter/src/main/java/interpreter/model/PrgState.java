@@ -1,4 +1,4 @@
-package interpreter.model.state;
+package interpreter.model;
 
 import interpreter.model.adt.IDictionary;
 import interpreter.model.adt.IList;

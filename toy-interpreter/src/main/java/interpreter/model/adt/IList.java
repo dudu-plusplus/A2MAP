@@ -4,6 +4,6 @@ import interpreter.exceptions.ADTException;
 
 public interface IList<T> {
     void add(T v);
-    T pop() throws ADTException;
-    boolean isEmpty();
+    T get(int index) throws ADTException;
+    int size();
 }
