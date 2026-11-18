@@ -8,5 +8,7 @@ public interface IDictionary<K, V> {
     V lookup(K key) throws ADTException;
     boolean isDefined(K key);
     void update(K key, V value) throws ADTException;
+    void remove(K key) throws ADTException;
     Map<K, V> getContent();
+    Map<K, V> toMap();
 }
