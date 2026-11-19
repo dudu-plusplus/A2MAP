@@ -38,6 +38,7 @@ public class Controller {
         while (!prg.getExeStack().isEmpty()) {
             oneStep(prg);
             repo.logPrgStateExec(prg);
+            display(prg);
         }
     }
 

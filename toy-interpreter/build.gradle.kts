@@ -21,6 +21,7 @@ application {
 
 tasks.named<JavaExec>("run") {
     standardInput = System.`in`
+    workingDir = rootDir // new: test.in and log files in the project root
 }
 
 tasks.test {
