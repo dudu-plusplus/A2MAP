@@ -1,36 +1,45 @@
 package interpreter.model.stmt;
 
-import interpreter.exceptions.ADTException;
-import interpreter.exceptions.ExpressionException;
+import interpreter.exceptions.MyException;
 import interpreter.exceptions.StatementException;
 import interpreter.model.PrgState;
 import interpreter.model.exp.IExp;
+import interpreter.model.type.StringType;
 import interpreter.model.value.IValue;
 import interpreter.model.value.StringValue;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public record CloseRFileStmt(IExp exp) implements IStmt {
+public class CloseRFileStmt implements IStmt {
+    private final IExp exp;
+
+    public CloseRFileStmt(IExp exp) {
+        this.exp = exp;
+    }
+
     @Override
-    public PrgState execute(PrgState state) throws StatementException {
+    public PrgState execute(PrgState state) {
         try {
             IValue val = exp.eval(state.getSymTable());
-            if (!(val instanceof StringValue fileName))
-                throw new StatementException("closeRFile: " + exp + " is not a string");
-
-            var fileTable = state.getFileTable();
-            if (!fileTable.isDefined(fileName))
-                throw new StatementException("closeRFile: " + fileName + " is not open");
-
-            BufferedReader reader = fileTable.lookup(fileName);
-            reader.close();
-            fileTable.remove(fileName);
-        } catch (ExpressionException | ADTException e) {
-            throw new StatementException(e.getMessage());
-        } catch (IOException e) {
-            throw new StatementException("closeRFile: I/O error: " + e.getMessage());
+            if (!(val.getType() instanceof StringType)) {
+                throw new StatementException("closeRFile expression must evaluate to a string");
+            }
+            StringValue fileName = (StringValue) val;
+            if (!state.getFileTable().isDefined(fileName)) {
+                throw new StatementException("File is not open: " + fileName.val());
+            }
+            BufferedReader reader = state.getFileTable().lookup(fileName);
+            try {
+                reader.close();
+            } catch (IOException e) {
+                throw new StatementException("Error closing file: " + fileName.val());
+            }
+            state.getFileTable().remove(fileName);
+            return state;
+        } catch (MyException e) {
+            throw new RuntimeException(e);
         }
-        return state;
     }
 
     @Override

@@ -3,6 +3,7 @@ package interpreter.controller;
 import interpreter.exceptions.MyException;
 import interpreter.model.PrgState;
 import interpreter.model.stmt.IStmt;
+import interpreter.model.value.IntValue;
 import interpreter.repository.Repository;
 import interpreter.view.Examples;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
-import interpreter.model.value.IntValue;
 
 class ControllerTest {
     @TempDir
@@ -31,6 +31,22 @@ class ControllerTest {
         assertEquals(new IntValue(15), s.getOut().get(0));
         assertEquals(new IntValue(50), s.getOut().get(1));
         assertTrue(s.getFileTable().toMap().isEmpty());
+    }
+
+    @Test
+    void fileExampleWithEmptyFilePrintsZeros() throws Exception {
+        Path empty = dir.resolve("empty.in");
+        Files.writeString(empty, "");
+        PrgState s = run(Examples.fileExample(empty.toString()));
+        assertEquals(new IntValue(0), s.getOut().get(0));
+        assertEquals(new IntValue(0), s.getOut().get(1));
+        assertTrue(s.getFileTable().toMap().isEmpty());
+    }
+
+    @Test
+    void ex5PrintsFive() throws Exception {
+        PrgState s = run(Examples.EX5);
+        assertEquals(new IntValue(5), s.getOut().get(0));
     }
 
     @Test
