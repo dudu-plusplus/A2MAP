@@ -10,18 +10,26 @@ import interpreter.view.RunExampleCommand;
 import interpreter.view.TextMenu;
 import java.util.List;
 
-public class Main {
-    public static void main(String[] args) {
+public class Main
+{
+    public static void main(String[] args)
+    {
         List<IStmt> programs = List.of(
                 Examples.EX1,
                 Examples.EX2,
                 Examples.EX3,
                 Examples.EX4,
-                Examples.EX5
+                Examples.EX5,
+                Examples.EX6,
+                Examples.EX7,
+                Examples.EX8,
+                Examples.EX9,
+                Examples.EX10
         );
         TextMenu menu = new TextMenu();
         menu.addCommand(new ExitCommand("0", "exit"));
-        for (int i = 0; i < programs.size(); i++) {
+        for (int i = 0; i < programs.size(); i++)
+        {
             IStmt program = programs.get(i);
             var repo = new Repository(PrgState.of(program), "log" + (i + 1) + ".txt");
             var controller = new Controller(repo, true);
