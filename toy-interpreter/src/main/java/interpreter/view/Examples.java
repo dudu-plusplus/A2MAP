@@ -83,4 +83,45 @@ public class Examples
                     )
             )
     );
+
+    // Ex6: Ref int v; new(v, 20); Ref Ref int a; new(a, v); print(rH(v)); print(rH(rH(a)) + 5)
+    public static final IStmt EX6 = new CompStmt(
+            new VarDeclStmt("v", new RefType(new IntType())),
+            new CompStmt(
+                    new NewStmt("v", new ValueExp(new IntValue(20))),
+                    new CompStmt(
+                            new VarDeclStmt("a", new RefType(new RefType(new IntType()))),
+                            new CompStmt(
+                                    new NewStmt("a", new VarExp("v")),
+                                    new CompStmt(
+                                            new PrintStmt(new ReadHeapExp(new VarExp("v"))),
+                                            new PrintStmt(new ArithExp(
+                                                    ArithOp.ADD,
+                                                    new ReadHeapExp(new ReadHeapExp(new VarExp("a"))),
+                                                    new ValueExp(new IntValue(5))
+                                            ))
+                                    )
+                            )
+                    )
+            )
+    );
+
+    // Ex7: Ref int v; new(v, 20); print(rH(v)); wH(v, 30); print(rH(v) + 5)
+    public static final IStmt EX7 = new CompStmt(
+            new VarDeclStmt("v", new RefType(new IntType())),
+            new CompStmt(
+                    new NewStmt("v", new ValueExp(new IntValue(20))),
+                    new CompStmt(
+                            new PrintStmt(new ReadHeapExp(new VarExp("v"))),
+                            new CompStmt(
+                                    new WriteHeapStmt("v", new ValueExp(new IntValue(30))),
+                                    new PrintStmt(new ArithExp(
+                                            ArithOp.ADD,
+                                            new ReadHeapExp(new VarExp("v")),
+                                            new ValueExp(new IntValue(5))
+                                    ))
+                            )
+                    )
+            )
+    );
 }
