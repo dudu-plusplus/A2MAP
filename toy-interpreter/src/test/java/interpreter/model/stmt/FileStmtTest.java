@@ -17,7 +17,8 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileStmtTest {
+class FileStmtTest
+{
     @TempDir
     Path dir;
 
@@ -26,7 +27,8 @@ class FileStmtTest {
     private Path filePath;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() throws Exception
+    {
         filePath = dir.resolve("numbers.in");
         Files.writeString(filePath, "7\n");
         file = new ValueExp(new StringValue(filePath.toString()));
@@ -35,7 +37,8 @@ class FileStmtTest {
     }
 
     @Test
-    void openRFileAddsToFileTableAndErrorsThrow() throws MyException {
+    void openRFileAddsToFileTableAndErrorsThrow() throws MyException
+    {
         new OpenRFileStmt(file).execute(state);
         assertTrue(state.getFileTable().isDefined(new StringValue(filePath.toString())));
 
@@ -53,7 +56,8 @@ class FileStmtTest {
     }
 
     @Test
-    void readFileReadsInOrderThenZeroAndErrorsThrow() throws Exception {
+    void readFileReadsInOrderThenZeroAndErrorsThrow() throws Exception
+    {
         Path multi = dir.resolve("multi.in");
         Files.writeString(multi, "10\n25\n");
         ValueExp multiExp = new ValueExp(new StringValue(multi.toString()));
@@ -93,11 +97,12 @@ class FileStmtTest {
     }
 
     @Test
-    void closeRFileRemovesFromFileTableAndUnopenedThrows() throws MyException {
+    void closeRFileRemovesFromFileTableAndUnopenedThrows() throws MyException
+    {
         new OpenRFileStmt(file).execute(state);
         new CloseRFileStmt(file).execute(state);
         assertFalse(state.getFileTable().isDefined(new StringValue(filePath.toString())));
-        assertThrows(RuntimeException.class,
+        assertThrows(StatementException.class,
                 () -> new CloseRFileStmt(file).execute(state));
     }
 }

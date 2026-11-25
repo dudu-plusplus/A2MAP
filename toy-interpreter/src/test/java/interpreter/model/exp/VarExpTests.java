@@ -1,17 +1,21 @@
 package interpreter.model.exp;
 
-import interpreter.exceptions.ExpressionException;
-import interpreter.exceptions.MyException;
+import interpreter.exceptions.ADTException;
+import interpreter.model.adt.IHeap;
 import interpreter.model.adt.MyDictionary;
+import interpreter.model.adt.MyHeap;
 import interpreter.model.value.IValue;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class VarExpTests {
+class VarExpTests
+{
     @Test
-    void undefinedVariableThrows() {
+    void undefinedVariableThrows()
+    {
         MyDictionary<String, IValue> symTable = new MyDictionary<>();
+        IHeap heap = new MyHeap();
         IExp var = new VarExp("x");
-        assertThrows(ExpressionException.class, () -> var.eval(symTable));
+        assertThrows(ADTException.class, () -> var.eval(symTable, heap));
     }
 }

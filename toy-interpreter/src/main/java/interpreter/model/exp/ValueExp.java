@@ -1,23 +1,28 @@
 package interpreter.model.exp;
 
-import interpreter.exceptions.ExpressionException;
+import interpreter.exceptions.MyException;
 import interpreter.model.adt.IDictionary;
+import interpreter.model.adt.IHeap;
 import interpreter.model.value.IValue;
 
-public class ValueExp implements IExp {
-    private final IValue val;
+public class ValueExp implements IExp
+{
+    private final IValue value;
 
-    public ValueExp(IValue v) {
-        val = v;
+    public ValueExp(IValue value)
+    {
+        this.value = value;
     }
 
     @Override
-    public IValue eval(IDictionary<String, IValue> tbl) throws ExpressionException {
-        return val;
+    public IValue eval(IDictionary<String, IValue> symTable, IHeap heap) throws MyException
+    {
+        return this.value;
     }
 
     @Override
-    public String toString() {
-        return val.toString();
+    public String toString()
+    {
+        return this.value.toString();
     }
 }

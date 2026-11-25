@@ -5,7 +5,8 @@ import interpreter.model.stmt.*;
 import interpreter.model.type.*;
 import interpreter.model.value.*;
 
-public class Examples {
+public class Examples
+{
     // Ex1: int v; v = 2; print(v)
     public static final IStmt EX1 = new CompStmt(
             new VarDeclStmt("v", new IntType()),
@@ -48,8 +49,9 @@ public class Examples {
             )
     );
 
-    // Ex4: string varf; varf = "test.in"; openRFile(varf); int varc; readFile(varf, varc); print(varc); readFile(varf, varc); print(varc); closeRFile(varf)[cite: 8]
-    public static IStmt fileExample(String fileName) {
+    // Ex4: string varf; varf = "test.in"; openRFile(varf); int varc; readFile(varf, varc); print(varc); readFile(varf, varc); print(varc); closeRFile(varf)
+    public static IStmt fileExample(String fileName)
+    {
         return new CompStmt(new VarDeclStmt("varf", new StringType()),
                 new CompStmt(new AssignStmt("varf", new ValueExp(new StringValue(fileName))),
                         new CompStmt(new OpenRFileStmt(new VarExp("varf")),
@@ -63,7 +65,7 @@ public class Examples {
 
     public static final IStmt EX4 = fileExample("test.in");
 
-    // Ex5: int a; int b; a = 5; b = 7; (if a < b then print(a) else print(b))[cite: 8]
+    // Ex5: int a; int b; a = 5; b = 7; (if a < b then print(a) else print(b))
     public static final IStmt EX5 = new CompStmt(
             new VarDeclStmt("a", new IntType()),
             new CompStmt(

@@ -1,45 +1,61 @@
 package interpreter.model.stmt;
 
-import interpreter.exceptions.ExpressionException;
+import interpreter.exceptions.MyException;
 import interpreter.exceptions.StatementException;
-import interpreter.model.exp.IExp;
 import interpreter.model.PrgState;
+import interpreter.model.adt.IStack;
+import interpreter.model.exp.IExp;
 import interpreter.model.type.BoolType;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
 
-public class IfStmt implements IStmt {
+public class IfStmt implements IStmt
+{
     private final IExp exp;
-    private final IStmt thenS;
-    private final IStmt elseS;
+    private final IStmt thenStmt;
+    private final IStmt elseStmt;
 
-    public IfStmt(IExp e, IStmt t, IStmt el) {
-        exp = e;
-        thenS = t;
-        elseS = el;
+    public IfStmt(IExp exp, IStmt thenStmt, IStmt elseStmt)
+    {
+        this.exp = exp;
+        this.thenStmt = thenStmt;
+        this.elseStmt = elseStmt;
     }
 
     @Override
-    public PrgState execute(PrgState state) throws StatementException {
-        try {
-            IValue val = exp.eval(state.getSymTable());
-            if (!val.getType().equals(new BoolType())) {
-                throw new StatementException("Conditional expression is not a boolean");
-            }
-            boolean cond = ((BoolValue) val).getVal();
-            if (cond) {
-                state.getExeStack().push(thenS);
-            } else {
-                state.getExeStack().push(elseS);
-            }
-        } catch (ExpressionException e) {
+    public PrgState execute(PrgState state) throws StatementException
+    {
+        IValue val;
+        try
+        {
+            val = this.exp.eval(state.getSymTable(), state.getHeap());
+        }
+        catch (MyException e)
+        {
             throw new StatementException(e.getMessage());
         }
+
+        if (!val.getType().equals(new BoolType()))
+        {
+            throw new StatementException("Condition expression must evaluate to a BoolType");
+        }
+
+        IStack<IStmt> exeStack = state.getExeStack();
+        if (((BoolValue) val).getVal())
+        {
+            exeStack.push(this.thenStmt);
+        }
+        else
+        {
+            exeStack.push(this.elseStmt);
+        }
+
         return state;
     }
 
     @Override
-    public String toString() {
-        return "(IF(" + exp.toString() + ") THEN(" + thenS.toString() + ") ELSE(" + elseS.toString() + "))";
+    public String toString()
+    {
+        return "if (" + this.exp + ") then (" + this.thenStmt + ") else (" + this.elseStmt + ")";
     }
 }

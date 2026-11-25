@@ -1,40 +1,70 @@
 package interpreter.model.stmt;
 
-import interpreter.exceptions.ExpressionException;
+import interpreter.exceptions.MyException;
 import interpreter.exceptions.StatementException;
 import interpreter.model.PrgState;
+import interpreter.model.adt.IDictionary;
 import interpreter.model.exp.IExp;
+import interpreter.model.type.StringType;
 import interpreter.model.value.IValue;
 import interpreter.model.value.StringValue;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public record OpenRFileStmt(IExp exp) implements IStmt {
+public class OpenRFileStmt implements IStmt
+{
+    private final IExp exp;
+
+    public OpenRFileStmt(IExp exp)
+    {
+        this.exp = exp;
+    }
+
     @Override
-    public PrgState execute(PrgState state) throws StatementException {
+    public PrgState execute(PrgState state) throws StatementException
+    {
+        IDictionary<String, IValue> symTable = state.getSymTable();
+        IDictionary<StringValue, BufferedReader> fileTable = state.getFileTable();
+
         IValue val;
-        try {
-            val = exp.eval(state.getSymTable());
-        } catch (ExpressionException e) {
+        try
+        {
+            val = this.exp.eval(symTable, state.getHeap());
+        }
+        catch (MyException e)
+        {
             throw new StatementException(e.getMessage());
         }
-        if (!(val instanceof StringValue fileName))
-            throw new StatementException("openRFile: " + exp + " is not a string");
-        var fileTable = state.getFileTable();
-        if (fileTable.isDefined(fileName))
-            throw new StatementException("openRFile: " + fileName + " is already open");
-        try {
-            var reader = new BufferedReader(new FileReader(fileName.val()));
-            fileTable.put(fileName, reader);
-        } catch (IOException e) {
-            throw new StatementException("openRFile: cannot open " + fileName + ": " + e.getMessage());
+
+        if (!val.getType().equals(new StringType()))
+        {
+            throw new StatementException("OpenRFile expression must evaluate to a StringType");
         }
+
+        StringValue fileName = (StringValue) val;
+        if (fileTable.isDefined(fileName))
+        {
+            throw new StatementException("File is already open: " + fileName.val());
+        }
+
+        try
+        {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName.val()));
+            fileTable.put(fileName, reader);
+        }
+        catch (IOException e)
+        {
+            throw new StatementException("Could not open file: " + fileName.val());
+        }
+
         return state;
     }
 
     @Override
-    public String toString() {
-        return "openRFile(" + exp + ")";
+    public String toString()
+    {
+        return "openRFile(" + this.exp + ")";
     }
 }
