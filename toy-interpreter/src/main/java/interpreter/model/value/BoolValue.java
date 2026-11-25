@@ -1,34 +1,37 @@
 package interpreter.model.value;
 
-import interpreter.model.type.IType;
 import interpreter.model.type.BoolType;
+import interpreter.model.type.IType;
 
-public class BoolValue implements IValue {
+public class BoolValue implements IValue
+{
     private final boolean val;
 
-    public BoolValue(boolean v) {
-        val = v;
+    public BoolValue(boolean val)
+    {
+        this.val = val;
     }
 
-    public boolean getVal() {
-        return val;
+    public boolean getVal()
+    {
+        return this.val;
     }
 
     @Override
-    public IType getType() {
+    public IType getType()
+    {
         return new BoolType();
     }
 
     @Override
-    public boolean equals(Object another) {
-        if (!(another instanceof BoolValue)) {
-            return false;
-        }
-        return this.val == ((BoolValue) another).getVal();
+    public boolean equals(Object another)
+    {
+        return another instanceof BoolValue other && this.val == other.val;
     }
 
     @Override
-    public String toString() {
-        return Boolean.toString(val);
+    public String toString()
+    {
+        return Boolean.toString(this.val);
     }
 }
