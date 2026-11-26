@@ -13,16 +13,15 @@ import interpreter.model.value.IValue;
 import interpreter.model.value.StringValue;
 
 import java.io.BufferedReader;
-import java.util.TreeMap;
 
 public class PrgState
 {
-    private final IStack<IStmt> exeStack;
-    private final IDictionary<String, IValue> symTable;
-    private final IList<IValue> out;
-    private final IDictionary<StringValue, BufferedReader> fileTable;
-    private final IHeap heap;
-    private final IStmt originalProgram;
+    private IStack<IStmt> exeStack;
+    private IDictionary<String, IValue> symTable;
+    private IList<IValue> out;
+    private IDictionary<StringValue, BufferedReader> fileTable;
+    private IHeap heap;
+    private IStmt originalProgram;
 
     public PrgState(
             IStack<IStmt> exeStack,
@@ -86,31 +85,17 @@ public class PrgState
 
     public String toLogString()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ExeStack:\n");
-        for (IStmt stmt : this.exeStack.toList())
-        {
-            sb.append(stmt).append("\n");
-        }
-        sb.append("SymTable:\n");
-        for (var entry : this.symTable.toMap().entrySet())
-        {
-            sb.append(entry.getKey()).append(" --> ").append(entry.getValue()).append("\n");
-        }
-        sb.append("Out:\n");
-        for (IValue val : this.out.toList())
-        {
-            sb.append(val).append("\n");
-        }
-        sb.append("FileTable:\n");
-        for (var entry : this.fileTable.toMap().entrySet())
-        {
-            sb.append(entry.getKey().val()).append("\n");
-        }
-        sb.append("Heap:\n");
-        new TreeMap<>(this.heap.getContent())
-                .forEach((addr, val) -> sb.append(addr).append(" --> ").append(val).append("\n"));
-        sb.append("\n");
-        return sb.toString();
+        return this.toString() + "\n";
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ExeStack:\n" + this.exeStack +
+                "\nSymTable:\n" + this.symTable +
+                "\nOut:\n" + this.out +
+                "\nFileTable:\n" + this.fileTable +
+                "\nHeap:\n" + this.heap +
+                "\n----------------------------------------";
     }
 }
